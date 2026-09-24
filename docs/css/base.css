@@ -1,0 +1,587 @@
+/* =========================================================================
+   MÉTHODE DE GUITARE — COULEURS CUBAINES
+   base.css — composants de contenu partagés par le site web et le PDF
+   ========================================================================= */
+
+:root {
+  /* Encres */
+  --ink:        #1F1B18;
+  --ink-soft:   #4E463E;
+  --ink-mute:   #7A6F63;
+
+  /* Papiers */
+  --paper:      #FCFAF6;
+  --sand:       #F5EDE0;
+  --sand-deep:  #EDE1CE;
+  --line:       #E2D6C2;
+  --line-soft:  #EFE7DA;
+
+  /* Accents */
+  --rust:       #B94F2C;
+  --rust-dark:  #8E3A1E;
+  --rust-tint:  #FBEDE6;
+  --teal:       #1C5057;
+  --teal-soft:  #2E7079;
+  --teal-tint:  #E9F2F1;
+  --gold:       #C68B21;
+  --gold-tint:  #FBF1DA;
+  --green:      #3A6F52;
+  --green-tint: #EAF3ED;
+  --plum:       #6B3A5B;
+  --plum-tint:  #F5EBF2;
+
+  /* Typo */
+  --serif: "EB Garamond", "Century Schoolbook L", Georgia, serif;
+  --sans:  "Inter", "DejaVu Sans", Helvetica, Arial, sans-serif;
+  --mono:  "JetBrains Mono", "DejaVu Sans Mono", monospace;
+}
+
+/* ---------------------------------------------------------------- reset */
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: oldstyle-nums;
+  font-variant-numeric: normal;
+}
+
+/* ------------------------------------------------------------ titrages */
+h1, h2, h3, h4, h5 {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.18;
+  margin: 0 0 .5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: 2.55em; letter-spacing: -0.012em; }
+h2 { font-size: 1.72em; letter-spacing: -0.008em; margin-top: 1.9em; }
+h3 { font-size: 1.28em; margin-top: 1.7em; color: var(--teal); }
+h4 {
+  font-family: var(--sans);
+  font-size: .82em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--rust);
+  margin-top: 1.7em;
+  margin-bottom: .45em;
+}
+
+/* Filet décoratif sous les H2 */
+h2::after {
+  content: "";
+  display: block;
+  width: 3.2em;
+  height: 3px;
+  margin-top: .42em;
+  background: var(--rust);
+  border-radius: 2px;
+}
+
+p { margin: 0 0 .95em; }
+p.lead {
+  font-family: var(--serif);
+  font-size: 1.24em;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 1.5em;
+}
+
+a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+strong { font-weight: 650; }
+em { font-style: italic; }
+
+ul, ol { margin: 0 0 1em; padding-left: 1.35em; }
+li { margin-bottom: .38em; }
+li::marker { color: var(--rust); }
+ul ul, ol ol, ul ol, ol ul { margin-top: .38em; margin-bottom: .2em; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin: 2.2em 0;
+}
+
+/* ------------------------------------------------------- en-tête section */
+.sec-head { margin-bottom: 1.8em; }
+.sec-kicker {
+  font-family: var(--sans);
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rust);
+  display: block;
+  margin-bottom: .55em;
+}
+.sec-head h1 { margin-bottom: .3em; }
+.sec-sub {
+  font-family: var(--serif);
+  font-size: 1.3em;
+  font-style: italic;
+  color: var(--ink-mute);
+  margin: 0;
+}
+.sec-rule {
+  height: 4px;
+  background: linear-gradient(90deg, var(--rust) 0 22%, var(--gold) 22% 44%, var(--teal) 44% 66%, var(--line) 66% 100%);
+  border-radius: 2px;
+  margin: 1.15em 0 1.6em;
+}
+
+/* --------------------------------------------------------------- encarts */
+.box {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink-mute);
+  border-radius: 6px;
+  background: #fff;
+  padding: .95em 1.15em .8em;
+  margin: 1.5em 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.box > :last-child { margin-bottom: 0; }
+.box-title {
+  font-family: var(--sans);
+  font-size: .74em;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0 0 .5em;
+  display: flex;
+  align-items: baseline;
+  gap: .5em;
+}
+.box-title .ic {
+  font-family: var(--serif);
+  font-size: 1.25em;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* variantes */
+.box.def      { border-left-color: var(--rust);  background: var(--rust-tint); }
+.box.def      .box-title { color: var(--rust-dark); }
+.box.saistu   { border-left-color: var(--gold);  background: var(--gold-tint); }
+.box.saistu   .box-title { color: #8A5F10; }
+.box.astuce   { border-left-color: var(--green); background: var(--green-tint); }
+.box.astuce   .box-title { color: var(--green); }
+.box.piege    { border-left-color: var(--rust);  background: #fff; }
+.box.piege    .box-title { color: var(--rust-dark); }
+.box.victoire { border-left-color: var(--gold);  background: linear-gradient(100deg, var(--gold-tint), #fff 75%); }
+.box.victoire .box-title { color: #8A5F10; }
+.box.defi     { border-left-color: var(--teal);  background: var(--teal-tint); }
+.box.defi     .box-title { color: var(--teal); }
+.box.ecoute   { border-left-color: var(--teal);  background: var(--teal-tint); }
+.box.ecoute   .box-title { color: var(--teal); }
+.box.plan     { border-left-color: var(--plum);  background: var(--plum-tint); }
+.box.plan     .box-title { color: var(--plum); }
+
+/* Encart définition compact, en marge du texte */
+.box.def p { margin-bottom: .55em; }
+.box.def .term-word {
+  font-family: var(--serif);
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--rust-dark);
+}
+.box.def .term-etym {
+  font-style: italic;
+  color: var(--ink-mute);
+  font-size: .9em;
+}
+
+/* terme technique signalé dans le fil du texte */
+.t {
+  font-weight: 650;
+  color: var(--rust-dark);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------- encart écoute */
+.listen {
+  display: flex;
+  gap: 1.05em;
+  align-items: flex-start;
+}
+.listen-body { flex: 1 1 auto; }
+.listen-body > :last-child { margin-bottom: 0; }
+.listen .qr {
+  flex: 0 0 auto;
+  width: 82px;
+  text-align: center;
+}
+.listen .qr img {
+  width: 82px; height: 82px;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  padding: 3px;
+}
+.listen .qr span {
+  display: block;
+  font-size: .58em;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: .3em;
+  font-weight: 600;
+}
+.track {
+  margin: 0 0 .4em;
+  padding-left: 1.15em;
+  text-indent: -1.15em;
+}
+.track .ti { font-weight: 650; }
+.track .ar { color: var(--ink-soft); }
+.track .yr { color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.3em 0;
+  font-size: .92em;
+  break-inside: avoid;
+}
+thead th {
+  background: var(--teal);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: .78em;
+  font-weight: 650;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: .52em .7em;
+  border: 0;
+}
+thead th:first-child { border-top-left-radius: 5px; }
+thead th:last-child  { border-top-right-radius: 5px; }
+tbody td {
+  padding: .48em .7em;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: #FAF6EF; }
+table.compact { font-size: .86em; }
+table.compact tbody td, table.compact thead th { padding: .34em .55em; }
+td.num, th.num { font-variant-numeric: tabular-nums; text-align: center; }
+td.chord { font-family: var(--mono); font-weight: 700; color: var(--rust-dark); }
+
+/* cases à cocher du carnet */
+span.cell-check {
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 1.4px solid var(--ink-mute);
+  border-radius: 3px;
+  vertical-align: -2px;
+}
+td.cell-check { text-align: center; }
+td.cell-check::after {
+  content: "";
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 1.4px solid var(--ink-mute);
+  border-radius: 3px;
+  vertical-align: -2px;
+}
+.ruled td { height: 1.55em; }
+.ruled.tall td { height: 2.6em; }
+.ruled.fixed { table-layout: fixed; }
+.ruled.fixed thead th + th { text-align: center; }
+.ruled.fixed tbody td + td { text-align: center; }
+
+/* ------------------------------------------------------------- tablature */
+pre.tab, pre.grid {
+  font-family: var(--mono);
+  font-size: .78em;
+  line-height: 1.5;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: .85em 1em;
+  overflow-x: auto;
+  margin: 1.2em 0;
+  break-inside: avoid;
+  white-space: pre;
+  color: var(--ink);
+}
+pre.grid { background: var(--sand); }
+.tab-cap, .fig-cap {
+  font-size: .8em;
+  color: var(--ink-mute);
+  margin: -.75em 0 1.4em;
+  font-style: italic;
+}
+
+/* -------------------------------------------------------------- figures */
+figure {
+  margin: 1.6em 0;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  text-align: center;
+}
+figure img, figure svg { max-width: 100%; height: auto; }
+figcaption {
+  font-size: .8em;
+  color: var(--ink-mute);
+  margin-top: .6em;
+  font-style: italic;
+  text-align: center;
+}
+figcaption b { font-style: normal; color: var(--ink-soft); }
+
+/* grille de diagrammes d'accords */
+.chords {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+  margin: 1.5em 0;
+  break-inside: avoid;
+}
+.chords.c2 { grid-template-columns: repeat(2, 1fr); }
+.chords.c3 { grid-template-columns: repeat(3, 1fr); }
+.chords img { width: 100%; }
+
+/* fiche d'accord détaillée */
+.chordcard {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 1.15em;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1em 1.15em;
+  margin: 1.25em 0;
+  background: #fff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.chordcard img { width: 132px; }
+.chordcard h3 { margin: 0 0 .15em; color: var(--ink); font-size: 1.35em; }
+.chordcard .cc-sub {
+  font-size: .78em;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--ink-mute);
+  font-weight: 600;
+  margin-bottom: .6em;
+}
+.chordcard dl { margin: 0; font-size: .92em; }
+.chordcard dt {
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-top: .55em;
+}
+.chordcard dt:first-child { margin-top: 0; }
+.chordcard dd { margin: 0 0 .1em; }
+
+/* ------------------------------------------------------------- étapes */
+ol.steps {
+  list-style: none;
+  padding: 0;
+  counter-reset: st;
+  margin: 1.3em 0;
+}
+ol.steps > li {
+  counter-increment: st;
+  position: relative;
+  padding-left: 2.5em;
+  margin-bottom: .85em;
+  break-inside: avoid;
+}
+ol.steps > li::before {
+  content: counter(st);
+  position: absolute;
+  left: 0; top: .02em;
+  width: 1.75em; height: 1.75em;
+  background: var(--teal);
+  color: #fff;
+  border-radius: 50%;
+  font-family: var(--sans);
+  font-size: .8em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ol.steps > li b { color: var(--ink); }
+
+/* ------------------------------------------------- cartes de la semaine */
+.week {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1.5em 0;
+  background: #fff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.week-head {
+  background: var(--teal);
+  color: #fff;
+  padding: .7em 1.05em .62em;
+  display: flex;
+  align-items: baseline;
+  gap: .8em;
+}
+.week-num {
+  font-family: var(--serif);
+  font-size: 1.55em;
+  font-weight: 700;
+  line-height: 1;
+}
+.week-title {
+  font-family: var(--serif);
+  font-size: 1.22em;
+  font-weight: 600;
+  flex: 1;
+}
+.week-goal {
+  font-size: .72em;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  opacity: .82;
+  font-weight: 600;
+}
+.week-body { padding: .95em 1.15em 1em; }
+.week-body > :last-child { margin-bottom: 0; }
+.week-body h4 { margin-top: 1.15em; }
+.week-body h4:first-child { margin-top: 0; }
+
+/* séance minutée */
+table.seance { font-size: .87em; margin: .9em 0; }
+table.seance td:first-child {
+  width: 4.6em;
+  font-family: var(--mono);
+  font-size: .92em;
+  font-weight: 700;
+  color: var(--teal);
+  white-space: nowrap;
+}
+table.seance thead th { background: var(--ink-soft); }
+
+/* --------------------------------------------------------------- divers */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15em;
+  margin: 1.3em 0;
+}
+.grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1em; margin: 1.3em 0; }
+.grid2 > *, .grid3 > * { min-width: 0; }
+.grid2 .box, .grid3 .box { margin: 0; }
+
+.pill {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .8em;
+  font-weight: 700;
+  background: var(--sand-deep);
+  color: var(--rust-dark);
+  border-radius: 4px;
+  padding: .08em .45em;
+  white-space: nowrap;
+}
+.pill.teal { background: var(--teal); color: #fff; }
+
+.kbd {
+  font-family: var(--mono);
+  font-size: .85em;
+  background: var(--sand);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0 .3em;
+}
+
+/* progression harmonique affichée en gros */
+.prog {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.05em;
+  color: var(--rust-dark);
+  letter-spacing: .02em;
+}
+
+/* citation */
+blockquote {
+  margin: 1.5em 0;
+  padding: .2em 0 .2em 1.15em;
+  border-left: 3px solid var(--gold);
+  font-family: var(--serif);
+  font-size: 1.16em;
+  font-style: italic;
+  color: var(--ink-soft);
+  break-inside: avoid;
+}
+blockquote footer {
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: .72em;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: .5em;
+  font-weight: 600;
+}
+
+/* glossaire */
+dl.gloss { margin: 1.2em 0; }
+dl.gloss dt {
+  font-family: var(--serif);
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--rust-dark);
+  margin-top: .9em;
+  break-after: avoid;
+}
+dl.gloss dt .cat {
+  font-family: var(--sans);
+  font-size: .56em;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: .1em .4em;
+  vertical-align: .22em;
+  margin-left: .5em;
+}
+dl.gloss dd { margin: .12em 0 0; }
+
+/* liste de contrôle */
+ul.check { list-style: none; padding-left: 0; }
+ul.check li {
+  padding-left: 1.7em;
+  position: relative;
+  margin-bottom: .42em;
+}
+ul.check li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .28em;
+  width: 13px; height: 13px;
+  border: 1.5px solid var(--gold);
+  border-radius: 3px;
+  background: #fff;
+}
+
+/* petits repères de navigation interne */
+.anchor-note {
+  font-size: .86em;
+  color: var(--ink-mute);
+}

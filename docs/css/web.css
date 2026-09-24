@@ -1,0 +1,304 @@
+/* =========================================================================
+   web.css — site multi-pages : sommaire latéral, navigation, lecture écran
+   ========================================================================= */
+@import "base.css";
+
+html { font-size: 17px; scroll-behavior: smooth; }
+body { margin: 0; }
+
+/* ----------------------------------------------------------- ossature */
+.layout {
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* ------------------------------------------------------ barre latérale */
+.side {
+  background: #16343A;
+  color: #D6E2E0;
+  padding: 1.6rem 0 2.5rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #0E2429;
+}
+.side::-webkit-scrollbar { width: 8px; }
+.side::-webkit-scrollbar-thumb { background: #2C555C; border-radius: 4px; }
+
+.brand {
+  display: block;
+  padding: 0 1.5rem 1.3rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  margin-bottom: 1.1rem;
+}
+.brand .bk {
+  font-size: .62rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: #E0B169;
+  display: block;
+  margin-bottom: .45rem;
+  font-weight: 700;
+}
+.brand .bt {
+  font-family: var(--serif);
+  font-size: 1.42rem;
+  line-height: 1.12;
+  color: #FCFAF6;
+  font-weight: 600;
+  display: block;
+}
+.brand .bt em { font-style: italic; color: #E8A87C; }
+
+.side nav ol { list-style: none; margin: 0; padding: 0; counter-reset: nv; }
+.side nav a {
+  display: flex;
+  gap: .7rem;
+  align-items: baseline;
+  padding: .5rem 1.5rem .5rem 1.25rem;
+  color: #C3D3D1;
+  text-decoration: none;
+  font-size: .87rem;
+  line-height: 1.32;
+  border-left: 3px solid transparent;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.side nav a .n {
+  font-family: var(--mono);
+  font-size: .72rem;
+  font-weight: 700;
+  color: #6E9A9B;
+  min-width: 1.4rem;
+  flex: 0 0 auto;
+}
+.side nav a:hover { background: rgba(255,255,255,.055); color: #fff; }
+.side nav a.active {
+  background: rgba(200,96,58,.16);
+  border-left-color: #C9603A;
+  color: #fff;
+  font-weight: 600;
+}
+.side nav a.active .n { color: #E8A87C; }
+
+.side-foot {
+  margin-top: 1.6rem;
+  padding: 1.1rem 1.5rem 0;
+  border-top: 1px solid rgba(255,255,255,.1);
+  font-size: .74rem;
+  line-height: 1.5;
+  color: #89A5A3;
+}
+.side-foot a { color: #E0B169; }
+.dl-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: .9rem;
+  background: #C9603A;
+  color: #fff !important;
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 650;
+  letter-spacing: .04em;
+  padding: .5rem .85rem;
+  border-radius: 6px;
+}
+.dl-pdf:hover { background: #B04F2C; }
+
+/* --------------------------------------------------------- zone lecture */
+.main { background: var(--paper); }
+.wrap {
+  max-width: 47rem;
+  margin: 0 auto;
+  padding: 3.2rem 2.4rem 4rem;
+}
+
+/* barre de progression de lecture */
+.progress {
+  position: sticky;
+  top: 0;
+  height: 3px;
+  background: var(--line-soft);
+  z-index: 20;
+}
+.progress i { display: block; height: 100%; background: var(--rust); width: 0; }
+
+/* fil d'ariane / compteur */
+.crumb {
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+  margin-bottom: 1.6rem;
+}
+.crumb b { color: var(--rust); }
+
+/* ---------------------------------------------------- navigation bas de page */
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+}
+.pager a {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: .85rem 1.05rem;
+  text-decoration: none;
+  background: #fff;
+  transition: border-color .12s, box-shadow .12s, transform .12s;
+}
+.pager a:hover {
+  border-color: var(--rust);
+  box-shadow: 0 3px 14px rgba(31,27,24,.07);
+  transform: translateY(-1px);
+}
+.pager .lbl {
+  display: block;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 700;
+  margin-bottom: .22rem;
+}
+.pager .ttl {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.pager .next { text-align: right; }
+.pager .spacer { }
+
+/* -------------------------------------------------------- page d'accueil */
+.hero {
+  background: #16343A;
+  color: #FCFAF6;
+  border-radius: 14px;
+  padding: 3rem 2.6rem 2.6rem;
+  margin-bottom: 2.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-art { position: absolute; right: -30px; top: 0; height: 100%; opacity: .5; }
+.hero-in { position: relative; }
+.hero .k {
+  font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+  color: #E0B169; font-weight: 700; display: block; margin-bottom: 1rem;
+}
+.hero h1 {
+  font-size: 2.9rem; color: #FCFAF6; margin: 0 0 .5rem; line-height: 1.04;
+}
+.hero h1 em { display: block; font-style: italic; color: #E8A87C; }
+.hero p {
+  font-family: var(--serif); font-size: 1.22rem; font-style: italic;
+  color: #C9D8D6; max-width: 32rem; margin: .9rem 0 0;
+}
+.hero-facts { display: flex; gap: 2.2rem; margin-top: 2rem; flex-wrap: wrap; }
+.hero-facts b {
+  display: block; font-family: var(--serif); font-size: 1.8rem;
+  color: #E0B169; font-weight: 700; line-height: 1.1;
+}
+.hero-facts span {
+  font-size: .68rem; letter-spacing: .13em; text-transform: uppercase; color: #A9BEBC;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.6rem 0;
+}
+.home-card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  background: #fff;
+  text-decoration: none;
+  transition: border-color .12s, box-shadow .12s, transform .12s;
+}
+.home-card:hover {
+  border-color: var(--rust);
+  box-shadow: 0 4px 16px rgba(31,27,24,.08);
+  transform: translateY(-2px);
+}
+.home-card .n {
+  font-family: var(--mono); font-size: .7rem; font-weight: 700;
+  color: var(--rust); letter-spacing: .08em;
+}
+.home-card h3 {
+  margin: .3rem 0 .25rem; font-size: 1.12rem; color: var(--ink);
+}
+.home-card p { margin: 0; font-size: .85rem; color: var(--ink-mute); line-height: 1.45; }
+
+/* ---------------------------------------------------- réglages composants */
+.chordcard { background: #fff; }
+pre.tab, pre.grid { font-size: .8rem; }
+
+/* liens de piste cliquables */
+.track a { text-decoration: none; border-bottom: 1px solid rgba(28,80,87,.3); }
+.track a:hover { border-bottom-color: var(--teal); }
+
+/* bouton haut de page */
+.totop {
+  position: fixed; right: 1.4rem; bottom: 1.4rem;
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  background: var(--teal); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 1rem;
+  box-shadow: 0 3px 12px rgba(0,0,0,.18);
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.totop.on { opacity: .9; pointer-events: auto; }
+
+/* menu mobile */
+.burger {
+  display: none;
+  position: sticky; top: 0; z-index: 30;
+  background: #16343A; color: #fff;
+  padding: .75rem 1.1rem;
+  align-items: center; gap: .7rem;
+  font-family: var(--serif); font-size: 1.05rem;
+  border: 0; width: 100%; text-align: left; cursor: pointer;
+}
+.burger span { font-family: var(--sans); font-size: 1.3rem; line-height: 1; }
+
+.print-only { display: none !important; }
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .burger { display: flex; }
+  .side {
+    position: static; height: auto; max-height: 0;
+    overflow: hidden; padding: 0; border: 0;
+    transition: max-height .25s ease;
+  }
+  .side.open { max-height: 200vh; padding: 1.2rem 0 1.8rem; }
+  .wrap { padding: 2rem 1.25rem 3rem; }
+  .hero { padding: 2rem 1.4rem; }
+  .hero h1 { font-size: 2.1rem; }
+  .chords { grid-template-columns: repeat(2, 1fr); }
+  .chordcard { grid-template-columns: 1fr; }
+  .chordcard img { width: 132px; margin: 0 auto; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .pager { grid-template-columns: 1fr; }
+  .listen { flex-direction: column; }
+  table { font-size: .84em; }
+}
+
+@media print {
+  .side, .pager, .crumb, .burger, .totop, .progress, .web-only { display: none !important; }
+  .layout { display: block; }
+  .wrap { max-width: none; padding: 0; }
+}

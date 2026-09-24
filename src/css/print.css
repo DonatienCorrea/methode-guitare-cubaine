@@ -1,0 +1,217 @@
+/* =========================================================================
+   print.css — mise en page paginée A4 (WeasyPrint)
+   ========================================================================= */
+@import "base.css";
+
+/* ------------------------------------------------------------ gabarits */
+@page {
+  size: A4;
+  margin: 20mm 18mm 18mm;
+
+  @top-left {
+    content: string(sectitle);
+    font-family: "Inter", sans-serif;
+    font-size: 7.5pt;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #7A6F63;
+    vertical-align: bottom;
+    padding-bottom: 3mm;
+  }
+  @top-right {
+    content: "Méthode de guitare · Couleurs cubaines";
+    font-family: "Inter", sans-serif;
+    font-size: 7.5pt;
+    letter-spacing: .06em;
+    color: #B6AA9A;
+    vertical-align: bottom;
+    padding-bottom: 3mm;
+  }
+  @bottom-center {
+    content: counter(page);
+    font-family: "EB Garamond", serif;
+    font-size: 10pt;
+    color: #7A6F63;
+    vertical-align: top;
+    padding-top: 4mm;
+  }
+}
+
+@page :first { margin: 0; @top-left { content: none; } @top-right { content: none; } @bottom-center { content: none; } }
+@page cover  { margin: 0; @top-left { content: none; } @top-right { content: none; } @bottom-center { content: none; } }
+@page blank  { @top-left { content: none; } @top-right { content: none; } }
+
+html { font-size: 10.4pt; }
+body { background: #fff; line-height: 1.55; }
+
+/* la chaîne de titre courant */
+.sec-head h1 { string-set: sectitle content(); }
+
+/* ---------------------------------------------------------- couverture */
+.cover {
+  page: cover;
+  break-after: page;
+  height: 297mm;
+  width: 210mm;
+  position: relative;
+  overflow: hidden;
+  background: #16343A;
+  color: #FCFAF6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cover-art { position: absolute; inset: 0; width: 210mm; height: 297mm; }
+.cover-inner {
+  position: relative;
+  padding: 30mm 22mm 20mm;
+  display: flex;
+  flex-direction: column;
+  height: 297mm;
+}
+.cover-kicker {
+  font-family: "Inter", sans-serif;
+  font-size: 9pt;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: #E0B169;
+  margin-bottom: 14mm;
+}
+.cover h1 {
+  font-family: "EB Garamond", serif;
+  font-size: 46pt;
+  line-height: 1.02;
+  color: #FCFAF6;
+  margin: 0 0 6mm;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.cover h1 em { font-style: italic; color: #E8A87C; display: block; }
+.cover .cover-sub {
+  font-family: "EB Garamond", serif;
+  font-size: 15pt;
+  font-style: italic;
+  color: #C9D8D6;
+  max-width: 120mm;
+  line-height: 1.38;
+  margin: 0;
+}
+.cover .cover-rule {
+  width: 40mm; height: 3px;
+  background: #C9603A;
+  margin: 10mm 0;
+  border-radius: 2px;
+}
+.cover-spacer { flex: 1; }
+.cover-facts {
+  display: flex;
+  gap: 12mm;
+  border-top: 1px solid rgba(252,250,246,.22);
+  padding-top: 6mm;
+  margin-top: 6mm;
+}
+.cover-facts div { flex: 1; }
+.cover-facts b {
+  display: block;
+  font-family: "EB Garamond", serif;
+  font-size: 21pt;
+  font-weight: 700;
+  color: #E0B169;
+  line-height: 1.1;
+}
+.cover-facts span {
+  font-family: "Inter", sans-serif;
+  font-size: 7.5pt;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #A9BEBC;
+}
+.cover-foot {
+  font-family: "Inter", sans-serif;
+  font-size: 8pt;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8FA7A5;
+  margin-top: 8mm;
+}
+
+/* ------------------------------------------------------------- sommaire */
+.toc { break-after: page; }
+.toc h1 { font-size: 2.1em; margin-bottom: .1em; }
+.toc-list { list-style: none; padding: 0; margin: 1.6em 0 0; counter-reset: toc; }
+.toc-list li {
+  counter-increment: toc;
+  display: flex;
+  align-items: baseline;
+  gap: .55em;
+  padding: .42em 0;
+  border-bottom: 1px dotted var(--line);
+  break-inside: avoid;
+}
+.toc-list li .n {
+  font-family: var(--mono);
+  font-size: .78em;
+  font-weight: 700;
+  color: var(--rust);
+  width: 2.1em;
+  flex: 0 0 auto;
+}
+.toc-list li a {
+  font-family: var(--serif);
+  font-size: 1.16em;
+  color: var(--ink);
+  text-decoration: none;
+  flex: 1 1 auto;
+}
+.toc-list li .d {
+  font-size: .8em;
+  color: var(--ink-mute);
+  flex: 0 0 auto;
+  max-width: 46%;
+  text-align: right;
+  font-style: italic;
+}
+.toc-list li a.pg {
+  flex: 0 0 auto;
+  min-width: 2.2em;
+  text-align: right;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: .82em;
+  font-weight: 700;
+  color: var(--teal);
+}
+.toc-list li a.pg::after { content: target-counter(attr(href url), page); }
+
+/* ------------------------------------------------------------- sections */
+.section { break-before: page; }
+.section:first-of-type { break-before: auto; }
+
+/* Bandeau de titre de section */
+.sec-head {
+  border-bottom: 2px solid var(--line);
+  padding-bottom: .9em;
+  margin-bottom: 1.5em;
+}
+.sec-head h1 { font-size: 2.3em; }
+
+h2 { break-after: avoid; }
+h3, h4 { break-after: avoid; }
+p, li { orphans: 2; widows: 2; }
+
+/* liens : en PDF, l'URL n'est pas cliquable en dur, on la laisse discrète */
+a { color: var(--teal); text-decoration: none; }
+a.url { font-family: var(--mono); font-size: .8em; color: var(--ink-mute); word-break: break-all; }
+
+/* images : éviter les débordements */
+figure img { max-height: 210mm; }
+
+/* forcer certaines pages */
+.page-break { break-before: page; }
+.avoid-break { break-inside: avoid; }
+
+/* le carnet de suivi en paysage n'est pas utilisé : tableaux compacts */
+.section.landscape { page: blank; }
+
+/* rendu écran des éléments réservés au web */
+.web-only { display: none !important; }
