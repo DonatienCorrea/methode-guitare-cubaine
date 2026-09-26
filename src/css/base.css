@@ -3,6 +3,10 @@
    base.css — composants de contenu partagés par le site web et le PDF
    ========================================================================= */
 
+/* --------------------------------------------------- garde-fou mobile */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, svg, video, iframe { max-width: 100%; height: auto; }
+
 :root {
   /* Encres */
   --ink:        #1F1B18;
@@ -245,6 +249,14 @@ hr {
 .track .ti { font-weight: 650; }
 .track .ar { color: var(--ink-soft); }
 .track .yr { color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+
+/* wrapper qui absorbe le débordement horizontal des tableaux larges */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.3em 0;
+}
+.table-scroll table { margin: 0; }
 
 /* ---------------------------------------------------------------- tables */
 table {

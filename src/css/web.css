@@ -288,13 +288,26 @@ pre.tab, pre.grid { font-size: .8rem; }
   .wrap { padding: 2rem 1.25rem 3rem; }
   .hero { padding: 2rem 1.4rem; }
   .hero h1 { font-size: 2.1rem; }
-  .chords { grid-template-columns: repeat(2, 1fr); }
+  .chords, .chords.c2, .chords.c3 { grid-template-columns: repeat(2, 1fr); }
   .chordcard { grid-template-columns: 1fr; }
   .chordcard img { width: 132px; margin: 0 auto; }
   .grid2, .grid3 { grid-template-columns: 1fr; }
   .pager { grid-template-columns: 1fr; }
   .listen { flex-direction: column; }
   table { font-size: .84em; }
+  .hero-facts { gap: 1.4rem 1.8rem; }
+  .totop {
+    width: 3.2rem; height: 3.2rem;
+    font-size: 1.35rem;
+    right: 1rem; bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .chords, .chords.c2, .chords.c3 { grid-template-columns: 1fr 1fr; gap: .7em; }
+  .home-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.75rem; }
+  .wrap { padding: 1.5rem 1rem 2.5rem; }
 }
 
 @media print {

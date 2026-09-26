@@ -125,7 +125,7 @@ def page(active_slug, title, inner, crumb=""):
     </a>
     <nav>{nav(active_slug)}</nav>
     <div class="side-foot">
-      <a class="dl-pdf" href="../{PDF_NAME}">&#8595;&nbsp; Version PDF imprimable</a>
+      <a class="dl-pdf" href="{PDF_NAME}">&#8595;&nbsp; Version PDF imprimable</a>
       <p>Guitare classique, cordes nylon.<br>8 semaines &middot; 20 min/jour.</p>
     </div>
   </aside>
@@ -194,7 +194,7 @@ que le programme t'enverra consulter au bon moment.</p>
 <h2>Le guide en version imprimable</h2>
 <p>Le PDF contient exactement le même contenu, paginé pour l'impression A4,
 avec le carnet de suivi à remplir au crayon.</p>
-<p><a class="dl-pdf" href="../{PDF_NAME}">&#8595;&nbsp; Télécharger le PDF</a></p>
+<p><a class="dl-pdf" href="{PDF_NAME}">&#8595;&nbsp; Télécharger le PDF</a></p>
 """
     return page("", "Accueil", inner)
 
@@ -203,6 +203,9 @@ def build_site():
     os.makedirs(SITE, exist_ok=True)
     shutil.copytree(os.path.join(HERE, "css"), os.path.join(SITE, "css"), dirs_exist_ok=True)
     shutil.copytree(os.path.join(HERE, "assets"), os.path.join(SITE, "assets"), dirs_exist_ok=True)
+    pdf_src = os.path.join(ROOT, PDF_NAME)
+    if os.path.exists(pdf_src):
+        shutil.copy2(pdf_src, os.path.join(SITE, PDF_NAME))
 
     with open(os.path.join(SITE, "index.html"), "w", encoding="utf-8") as f:
         f.write(home())
