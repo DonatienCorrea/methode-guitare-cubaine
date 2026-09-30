@@ -3,3 +3,6 @@ __MACOSX/
 *.pyc
 __pycache__/
 /site/
+
+# le PDF est généré dans docs/, jamais à la racine
+/Methode-guitare-couleurs-cubaines.pdf

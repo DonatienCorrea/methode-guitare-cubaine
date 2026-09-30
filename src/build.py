@@ -7,6 +7,7 @@ Générateur unique : les mêmes fragments HTML produisent
 
 Une modification dans src/sections/*.html se répercute sur les deux formats.
 """
+import html as html_mod
 import os
 import re
 import shutil
@@ -14,7 +15,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-SITE = os.path.join(ROOT, "site")
+SITE = os.path.join(ROOT, "docs")   # dossier publié par GitHub Pages
 SECT = os.path.join(HERE, "sections")
 
 sys.path.insert(0, HERE)
@@ -22,6 +23,39 @@ from manifest import SECTIONS, TITRE, SOUS_TITRE  # noqa: E402
 import ecoutes  # noqa: E402
 
 PDF_NAME = "Methode-guitare-couleurs-cubaines.pdf"
+SITE_URL = "https://donatiencorrea.github.io/methode-guitare-cubaine/"
+
+
+# ------------------------------------------------------------ encarts d'écoute
+QR_BLOCK = re.compile(
+    r'<div class="qr">\s*<img src="assets/qr/([a-z0-9-]+)\.svg"[^>]*>\s*'
+    r'(?:<span>([^<]*)</span>)?\s*</div>', re.DOTALL)
+
+
+def qr_alt(slug, web):
+    """Alternative textuelle dérivée du titre du morceau, jamais un « QR code » nu."""
+    track = ecoutes.TRACKS.get(slug)
+    if not track:
+        return "QR code"
+    titre, interprete, annee = track[0], track[1], track[2]
+    qui = "" if annee == "—" else f", {interprete}"
+    texte = (f"Écouter {titre}{qui} sur YouTube" if web
+             else f"QR code vers {titre}{qui}")
+    return html_mod.escape(texte, quote=True)
+
+
+def listening(frag, web):
+    """Sur le site, le QR devient un lien : on ne scanne pas l'écran qu'on lit.
+    Dans le PDF il reste une image, puisque c'est là qu'il sert vraiment."""
+    def repl(m):
+        slug = m.group(1)
+        label = m.group(2) or "Écouter"
+        img = f'<img src="assets/qr/{slug}.svg" alt="{qr_alt(slug, web)}">'
+        if not web:
+            return f'<div class="qr">{img}<span>{label}</span></div>'
+        return (f'<a class="qr" href="{ecoutes.url_for(slug)}" target="_blank" '
+                f'rel="noopener">{img}<span>{label}</span></a>')
+    return QR_BLOCK.sub(repl, frag)
 
 
 # ---------------------------------------------------------------- fragments
@@ -45,7 +79,7 @@ def head_block(sec):
 
 def section_html(sec):
     return (f'<section class="section" id="s{sec["n"]}">'
-            + head_block(sec) + fragment(sec) + "</section>")
+            + head_block(sec) + listening(fragment(sec), web=False) + "</section>")
 
 
 # ------------------------------------------------------------------ le PDF
@@ -91,7 +125,8 @@ def build_pdf():
 <title>{TITRE} — {SOUS_TITRE}</title>
 <link rel="stylesheet" href="css/print.css">
 </head><body>{body}</body></html>"""
-    out = os.path.join(ROOT, PDF_NAME)
+    os.makedirs(SITE, exist_ok=True)
+    out = os.path.join(SITE, PDF_NAME)
     HTML(string=doc, base_url=HERE + "/").write_pdf(out)
     return out
 
@@ -107,38 +142,63 @@ def nav(active_slug):
     return "<ol>" + "".join(li) + "</ol>"
 
 
-def page(active_slug, title, inner, crumb=""):
+def page(active_slug, title, inner, crumb="", desc="", path="index.html"):
+    accueil = (path == "index.html")
+    brut = f"{TITRE} — méthode de guitare classique cubaine" if accueil else f"{title} — {TITRE}"
+    t = html_mod.escape(brut, quote=True)
+    d = html_mod.escape(desc or SOUS_TITRE, quote=True)
+    url = SITE_URL + ("" if accueil else path)
+    ogtype = "website" if accueil else "article"
     return f"""<!DOCTYPE html>
 <html lang="fr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} — {TITRE}</title>
+<title>{t}</title>
+<meta name="description" content="{d}">
+<meta name="author" content="Donatien Correa">
+<meta name="theme-color" content="#16343A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="{ogtype}">
+<meta property="og:site_name" content="{TITRE}">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="{t}">
+<meta property="og:description" content="{d}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{SITE_URL}og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="css/web.css">
 </head><body>
-<button class="burger" onclick="document.querySelector('.side').classList.toggle('open')">
-  <span>&#9776;</span> {TITRE} — sommaire</button>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<button class="burger" id="burger" aria-expanded="false" aria-controls="sommaire">
+  <span aria-hidden="true">&#9776;</span> {TITRE} — sommaire</button>
 <div class="layout">
-  <aside class="side">
+  <aside class="side" id="sommaire">
     <a class="brand" href="index.html">
       <span class="bk">Méthode de guitare</span>
       <span class="bt">Couleurs <em>cubaines</em></span>
     </a>
-    <nav>{nav(active_slug)}</nav>
+    <nav aria-label="Sommaire des sections">{nav(active_slug)}</nav>
     <div class="side-foot">
       <a class="dl-pdf" href="{PDF_NAME}">&#8595;&nbsp; Version PDF imprimable</a>
       <p>Guitare classique, cordes nylon.<br>8 semaines &middot; 20 min/jour.</p>
     </div>
   </aside>
-  <main class="main">
+  <main class="main" id="contenu" tabindex="-1">
     <div class="progress"><i></i></div>
     <div class="wrap">{crumb}{inner}</div>
   </main>
 </div>
-<a class="totop" href="#" title="Haut de page">&#8593;</a>
+<a class="totop" href="#" title="Haut de page" aria-label="Revenir en haut de page">&#8593;</a>
 <script>
 (function(){{
-  var bar = document.querySelector('.progress i');
-  var top = document.querySelector('.totop');
+  var bar    = document.querySelector('.progress i');
+  var top    = document.querySelector('.totop');
+  var burger = document.getElementById('burger');
+  var side   = document.getElementById('sommaire');
+
   function up(){{
     var h = document.documentElement;
     var max = h.scrollHeight - h.clientHeight;
@@ -148,6 +208,23 @@ def page(active_slug, title, inner, crumb=""):
   }}
   document.addEventListener('scroll', up, {{passive:true}});
   up();
+
+  function setMenu(open){{
+    side.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }}
+  burger.addEventListener('click', function(){{
+    setMenu(!side.classList.contains('open'));
+  }});
+  // refermer après un choix : sinon le sommaire reste déployé sur mobile
+  side.addEventListener('click', function(e){{
+    if (e.target.closest('a')) setMenu(false);
+  }});
+  document.addEventListener('keydown', function(e){{
+    if (e.key === 'Escape' && side.classList.contains('open')) {{
+      setMenu(false); burger.focus();
+    }}
+  }});
 }})();
 </script>
 </body></html>"""
@@ -196,16 +273,28 @@ que le programme t'enverra consulter au bon moment.</p>
 avec le carnet de suivi à remplir au crayon.</p>
 <p><a class="dl-pdf" href="{PDF_NAME}">&#8595;&nbsp; Télécharger le PDF</a></p>
 """
-    return page("", "Accueil", inner)
+    return page("", "Accueil", inner,
+                desc=("Méthode de guitare classique pour débutant, orientée répertoire cubain : "
+                      "8 semaines, 20 minutes par jour, guitare à cordes nylon. "
+                      "Site et PDF imprimable, gratuits."),
+                path="index.html")
+
+
+def write_branding():
+    """favicon + image Open Graph : fichiers statiques, pas de dépendance de build."""
+    static = os.path.join(HERE, "static")
+    if os.path.isdir(static):
+        for name in sorted(os.listdir(static)):
+            if name.endswith(".svg") and name.startswith("og-"):
+                continue  # la source vectorielle de la carte OG reste dans src/
+            shutil.copy2(os.path.join(static, name), os.path.join(SITE, name))
 
 
 def build_site():
     os.makedirs(SITE, exist_ok=True)
     shutil.copytree(os.path.join(HERE, "css"), os.path.join(SITE, "css"), dirs_exist_ok=True)
     shutil.copytree(os.path.join(HERE, "assets"), os.path.join(SITE, "assets"), dirs_exist_ok=True)
-    pdf_src = os.path.join(ROOT, PDF_NAME)
-    if os.path.exists(pdf_src):
-        shutil.copy2(pdf_src, os.path.join(SITE, PDF_NAME))
+    write_branding()
 
     with open(os.path.join(SITE, "index.html"), "w", encoding="utf-8") as f:
         f.write(home())
@@ -213,9 +302,10 @@ def build_site():
     for i, s in enumerate(SECTIONS):
         crumb = (f'<div class="crumb">{s["kicker"]} &nbsp;&middot;&nbsp; '
                  f'Section <b>{s["n"]:02d}</b> / {len(SECTIONS)}</div>')
-        inner = head_block(s) + fragment(s) + pager(i)
+        inner = head_block(s) + listening(fragment(s), web=True) + pager(i)
         with open(os.path.join(SITE, f"{s['slug']}.html"), "w", encoding="utf-8") as f:
-            f.write(page(s["slug"], s["title"], inner, crumb))
+            f.write(page(s["slug"], s["title"], inner, crumb,
+                         desc=s["sub"], path=f'{s["slug"]}.html'))
     return SITE
 
 

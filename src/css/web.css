@@ -261,6 +261,36 @@ pre.tab, pre.grid { font-size: .8rem; }
 }
 .totop.on { opacity: .9; pointer-events: auto; }
 
+/* ------------------------------------------------- lien d'évitement a11y */
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--rust); color: #fff;
+  padding: .7rem 1.1rem;
+  font-family: var(--sans); font-size: .95rem; font-weight: 600;
+  text-decoration: none; border-radius: 0 0 6px 0;
+}
+.skip:focus { left: 0; }
+.main:focus { outline: none; }
+
+/* -------------------------------------- QR cliquables (web uniquement) */
+/* À l'écran on ne scanne pas : l'encart devient un lien vers l'écoute. */
+a.qr {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+a.qr img { transition: border-color .15s, box-shadow .15s; }
+a.qr span { transition: color .15s; text-decoration: underline;
+            text-decoration-color: transparent; }
+a.qr:hover img, a.qr:focus-visible img {
+  border-color: var(--rust);
+  box-shadow: 0 0 0 3px var(--rust-tint);
+}
+a.qr:hover span, a.qr:focus-visible span {
+  color: var(--rust); text-decoration-color: currentColor;
+}
+a.qr:focus-visible { outline: none; }
+
 /* menu mobile */
 .burger {
   display: none;

@@ -1,39 +1,63 @@
-# Couleurs cubaines — méthode de guitare
+# Couleurs cubaines — méthode de guitare classique
 
-Deux formats, une seule source.
+Une méthode de guitare classique pour débutant, orientée répertoire cubain :
+huit semaines, vingt minutes par jour, cordes nylon.
 
-- `Methode-guitare-couleurs-cubaines.pdf` — 86 pages, A4, prêt à imprimer (recto simple ou recto-verso).
-- `site/index.html` — la même méthode en 13 pages web, avec sommaire latéral et navigation précédent/suivant. À ouvrir directement dans un navigateur, aucun serveur nécessaire.
+- **Site** → <https://donatiencorrea.github.io/methode-guitare-cubaine/>
+- **PDF imprimable** → [`docs/Methode-guitare-couleurs-cubaines.pdf`](docs/Methode-guitare-couleurs-cubaines.pdf) (86 pages, A4)
 
-## Modifier le contenu
+Les deux formats sortent de la **même source** : une modification dans
+`src/sections/` se répercute sur le site et sur le PDF.
 
-Tout le texte vit dans `src/sections/NN-slug.html`. Chaque fichier ne contient que le corps
-de la section : le titre, le sur-titre et le filet sont générés automatiquement à partir de
-`src/manifest.py`, qui est la source unique du sommaire (ordre, numéros, titres, descriptions).
+## Structure
 
-Les styles sont séparés en trois feuilles dans `src/css/` :
+```
+src/                 la source, seul endroit à modifier
+  sections/NN-slug.html  le texte de chaque section
+  manifest.py            sommaire : ordre, numéros, titres, descriptions
+  css/base.css           composants partagés site + PDF
+  css/print.css          mise en page A4, en-têtes courants, pagination
+  css/web.css            mise en page du site
+  static/                favicon et carte Open Graph
+  diagrams_*.py          génération des diagrammes SVG
+  ecoutes.py             catalogue des morceaux et génération des QR codes
+  build.py               le générateur
+docs/                 GÉNÉRÉ — ne pas éditer à la main
+```
 
-- `base.css` — tous les composants partagés (encarts, tableaux, diagrammes, tablatures) ;
-- `print.css` — la mise en page A4, les en-têtes courants, les numéros de page, le sommaire ;
-- `web.css` — la mise en page du site.
-
-Une modification dans `sections/` ou dans `base.css` se propage donc aux deux formats.
+`docs/` est publié tel quel par GitHub Pages (branche `main`, dossier `/docs`).
+Il est versionné pour que le site reste servi sans étape de déploiement, mais il
+est **entièrement reconstructible** : ne modifiez jamais un fichier de `docs/`,
+il serait écrasé au prochain build.
 
 ## Reconstruire
 
 ```
-cd src
-python3 build.py          # PDF + site
-python3 build.py pdf      # PDF seul
-python3 build.py site     # site seul
+pip install -r requirements.txt
+python3 src/build.py          # site + PDF
+python3 src/build.py site     # site seul
+python3 src/build.py pdf      # PDF seul
 ```
 
-Dépendances : `weasyprint` pour le PDF, rien d'autre pour le site.
-Les diagrammes SVG (`src/assets/img/`) et les QR codes (`src/assets/qr/`) sont déjà générés ;
-les scripts `diagrams_*.py` et `ecoutes.py` permettent de les régénérer si besoin.
+Le rendu du PDF dépend des polices installées sur la machine : *EB Garamond*,
+*Inter* et *JetBrains Mono*. À défaut, WeasyPrint retombe silencieusement sur
+des substituts et la mise en page bouge.
+
+C'est pour cette raison que la reconstruction de référence tourne en intégration
+continue : le workflow [`.github/workflows/build.yml`](.github/workflows/build.yml)
+installe les bonnes polices, relance `build.py` à chaque modification de `src/`
+et recommite `docs/`. `docs/` ne peut donc pas diverger durablement des sources.
 
 ## Les QR codes
 
-Ils pointent vers des recherches YouTube, pas vers des identifiants de vidéo précis :
-sur un document imprimé qui durera des années, une recherche résiste aux suppressions de
-chaînes et aux blocages géographiques, contrairement à un lien direct.
+Ils pointent vers des **recherches** YouTube, pas vers des identifiants de vidéo
+précis : sur un document imprimé qui durera des années, une recherche résiste aux
+suppressions de chaînes et aux blocages géographiques, contrairement à un lien
+direct. Sur le site, où l'on ne scanne pas l'écran qu'on est en train de lire,
+le même encart devient un lien cliquable.
+
+## Licence
+
+[CC BY-NC-SA 4.0](LICENSE) — partage et adaptation libres, usage non commercial,
+partage à l'identique. Les morceaux cités et les enregistrements pointés par les
+QR codes restent la propriété de leurs ayants droit.

@@ -1,0 +1,3 @@
+# Dépendances de build (python3 src/build.py)
+weasyprint>=60      # rendu PDF A4 depuis le HTML
+qrcode>=7.4         # QR codes des encarts d'écoute (src/ecoutes.py)
