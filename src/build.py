@@ -59,6 +59,27 @@ def listening(frag, web):
 
 
 # ---------------------------------------------------------------- fragments
+WIDGET = re.compile(r'<div class="widget" data-widget="([a-z0-9-]+)"></div>')
+
+def widgets(frag, web):
+    """Même principe que listening() : un marqueur, deux rendus.
+    Sur le web il devient un composant interactif ; dans le PDF, un renvoi."""
+    def repl(m):
+        name = m.group(1)
+        path = os.path.join(HERE, "widgets", name + ".html")
+        if not os.path.exists(path):
+            return ""
+        if not web:
+            return ('<p class="widget-print"><b>Sur le site</b>, cette grille est '
+                    'jouable&nbsp;: la clave, le tresillo et le cinquillo s\'y écoutent '
+                    'au tempo de ton choix, avec la pulsation en dessous. '
+                    '<span class="u">' + SITE_URL.replace("https://", "") +
+                    'rythme.html</span></p>')
+        with open(path, encoding="utf-8") as f:
+            return f.read()
+    return WIDGET.sub(repl, frag)
+
+
 def fragment(sec):
     path = os.path.join(SECT, f"{sec['n']:02d}-{sec['slug']}.html")
     if not os.path.exists(path):
@@ -79,7 +100,8 @@ def head_block(sec):
 
 def section_html(sec):
     return (f'<section class="section" id="s{sec["n"]}">'
-            + head_block(sec) + listening(fragment(sec), web=False) + "</section>")
+            + head_block(sec) + widgets(listening(fragment(sec), web=False), web=False)
+                + "</section>")
 
 
 # ------------------------------------------------------------------ le PDF
@@ -142,7 +164,7 @@ def nav(active_slug):
     return "<ol>" + "".join(li) + "</ol>"
 
 
-def page(active_slug, title, inner, crumb="", desc="", path="index.html"):
+def page(active_slug, title, inner, crumb="", desc="", path="index.html", scripts=""):
     accueil = (path == "index.html")
     brut = f"{TITRE} — méthode de guitare classique cubaine" if accueil else f"{title} — {TITRE}"
     t = html_mod.escape(brut, quote=True)
@@ -227,6 +249,7 @@ def page(active_slug, title, inner, crumb="", desc="", path="index.html"):
   }});
 }})();
 </script>
+{scripts}
 </body></html>"""
 
 
@@ -290,10 +313,18 @@ def write_branding():
             shutil.copy2(os.path.join(static, name), os.path.join(SITE, name))
 
 
+def page_scripts(inner):
+    """Un script n'est chargé que sur la page qui en a besoin."""
+    return ('<script src="js/metronome.js" defer></script>'
+            if 'id="metro"' in inner else "")
+
+
 def build_site():
     os.makedirs(SITE, exist_ok=True)
     shutil.copytree(os.path.join(HERE, "css"), os.path.join(SITE, "css"), dirs_exist_ok=True)
     shutil.copytree(os.path.join(HERE, "assets"), os.path.join(SITE, "assets"), dirs_exist_ok=True)
+    if os.path.isdir(os.path.join(HERE, "js")):
+        shutil.copytree(os.path.join(HERE, "js"), os.path.join(SITE, "js"), dirs_exist_ok=True)
     write_branding()
 
     with open(os.path.join(SITE, "index.html"), "w", encoding="utf-8") as f:
@@ -302,10 +333,11 @@ def build_site():
     for i, s in enumerate(SECTIONS):
         crumb = (f'<div class="crumb">{s["kicker"]} &nbsp;&middot;&nbsp; '
                  f'Section <b>{s["n"]:02d}</b> / {len(SECTIONS)}</div>')
-        inner = head_block(s) + listening(fragment(s), web=True) + pager(i)
+        inner = head_block(s) + widgets(listening(fragment(s), web=True), web=True) + pager(i)
         with open(os.path.join(SITE, f"{s['slug']}.html"), "w", encoding="utf-8") as f:
             f.write(page(s["slug"], s["title"], inner, crumb,
-                         desc=s["sub"], path=f'{s["slug"]}.html'))
+                         desc=s["sub"], path=f'{s["slug"]}.html',
+                         scripts=page_scripts(inner)))
     return SITE
 
 

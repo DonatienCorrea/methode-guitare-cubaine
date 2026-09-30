@@ -215,3 +215,14 @@ figure img { max-height: 210mm; }
 
 /* rendu écran des éléments réservés au web */
 .web-only { display: none !important; }
+
+/* renvoi vers le composant interactif du site (voir widgets() dans build.py) */
+.widget-print {
+  margin: 1em 0 1.4em;
+  padding: .55em .8em;
+  background: var(--teal-tint);
+  border-left: 3px solid var(--teal);
+  font-size: .86em;
+  color: var(--ink-soft);
+}
+.widget-print .u { font-family: var(--mono); font-size: .92em; color: var(--teal); }

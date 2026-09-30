@@ -18,6 +18,8 @@ src/                 la source, seul endroit à modifier
   css/base.css           composants partagés site + PDF
   css/print.css          mise en page A4, en-têtes courants, pagination
   css/web.css            mise en page du site
+  js/                    scripts de page (boîte à rythme de la section 7)
+  widgets/               composants web injectés par build.py
   static/                favicon et carte Open Graph
   diagrams_*.py          génération des diagrammes SVG
   ecoutes.py             catalogue des morceaux et génération des QR codes
@@ -47,6 +49,22 @@ C'est pour cette raison que la reconstruction de référence tourne en intégrat
 continue : le workflow [`.github/workflows/build.yml`](.github/workflows/build.yml)
 installe les bonnes polices, relance `build.py` à chaque modification de `src/`
 et recommite `docs/`. `docs/` ne peut donc pas diverger durablement des sources.
+
+## Composants interactifs
+
+Un marqueur `<div class="widget" data-widget="nom"></div>` posé dans un fragment
+de section est développé par `build.py` en composant HTML sur le site, et
+remplacé par un renvoi d'une ligne dans le PDF. Même mécanisme que les encarts
+d'écoute : une seule source, deux rendus.
+
+La boîte à rythme de la section 7 (`src/js/metronome.js`) synthétise ses sons —
+aucun fichier audio dans le dépôt — et ordonnance les frappes sur l'horloge de
+la Web Audio API plutôt qu'avec `setInterval`, qui dérive. Cette partie est
+couverte par un banc d'essai :
+
+```
+node tests/metronome.test.js
+```
 
 ## Les QR codes
 

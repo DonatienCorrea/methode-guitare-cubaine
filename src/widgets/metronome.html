@@ -1,0 +1,69 @@
+<div class="metro" id="metro" role="group" aria-labelledby="metro-title">
+  <p class="metro-title" id="metro-title">
+    <span class="ic" aria-hidden="true">&#9834;</span> Boîte à rythme
+    <span class="metro-sub">la grille ci-dessus, en son</span>
+  </p>
+
+  <ol class="metro-grid" id="metro-grid" aria-hidden="true">
+    <li class="c beat hit" data-i="0"><span>1</span></li>
+    <li class="c" data-i="1"><span>&amp;</span></li>
+    <li class="c beat" data-i="2"><span>2</span></li>
+    <li class="c hit" data-i="3"><span>&amp;</span></li>
+    <li class="c beat" data-i="4"><span>3</span></li>
+    <li class="c" data-i="5"><span>&amp;</span></li>
+    <li class="c beat hit" data-i="6"><span>4</span></li>
+    <li class="c bar-end" data-i="7"><span>&amp;</span></li>
+    <li class="c beat" data-i="8"><span>1</span></li>
+    <li class="c" data-i="9"><span>&amp;</span></li>
+    <li class="c beat hit" data-i="10"><span>2</span></li>
+    <li class="c" data-i="11"><span>&amp;</span></li>
+    <li class="c beat hit" data-i="12"><span>3</span></li>
+    <li class="c" data-i="13"><span>&amp;</span></li>
+    <li class="c beat" data-i="14"><span>4</span></li>
+    <li class="c" data-i="15"><span>&amp;</span></li>
+  </ol>
+  <p class="metro-legend" id="metro-legend">Clave son 3-2 &middot; cinq frappes sur deux mesures.</p>
+
+  <div class="metro-transport">
+    <button type="button" class="m-play" id="m-play" aria-pressed="false">
+      <span class="m-ico" aria-hidden="true">&#9654;</span><span class="m-lab">Lancer</span>
+    </button>
+    <div class="m-tempo">
+      <label for="m-bpm">Tempo</label>
+      <input type="range" id="m-bpm" min="40" max="208" step="1" value="80"
+             aria-describedby="m-bpm-out">
+      <output id="m-bpm-out" for="m-bpm">80&nbsp;BPM</output>
+      <button type="button" class="m-tap" id="m-tap">Tap</button>
+    </div>
+  </div>
+
+  <div class="metro-patterns" role="radiogroup" aria-label="Motif rythmique">
+    <button type="button" role="radio" aria-checked="false" data-p="pulse">Pulsation</button>
+    <button type="button" role="radio" aria-checked="false" data-p="croches">Croches</button>
+    <button type="button" role="radio" aria-checked="true"  data-p="son32">Clave son 3-2</button>
+    <button type="button" role="radio" aria-checked="false" data-p="son23">Clave son 2-3</button>
+    <button type="button" role="radio" aria-checked="false" data-p="rumba32">Clave rumba 3-2</button>
+    <button type="button" role="radio" aria-checked="false" data-p="tresillo">Tresillo</button>
+    <button type="button" role="radio" aria-checked="false" data-p="cinquillo">Cinquillo</button>
+  </div>
+
+  <div class="metro-options">
+    <div class="m-opt" id="m-pulse-opt">
+      <span class="m-opt-lab" id="m-pulse-lab">Pulsation de fond</span>
+      <div class="m-seg" role="radiogroup" aria-labelledby="m-pulse-lab">
+        <button type="button" role="radio" aria-checked="false" data-bg="none">aucune</button>
+        <button type="button" role="radio" aria-checked="true"  data-bg="quarter">noires</button>
+        <button type="button" role="radio" aria-checked="false" data-bg="backbeat">2 et 4</button>
+      </div>
+    </div>
+    <button type="button" class="m-toggle" id="m-ramp" aria-pressed="false">
+      +4&nbsp;BPM toutes les 4 mesures</button>
+    <p class="m-count">Mesures jouées&nbsp;: <b id="m-bars">0</b></p>
+  </div>
+
+  <p class="metro-note">
+    Le son démarre au clic (les navigateurs l'exigent). Sur iPhone, le petit
+    interrupteur latéral coupe aussi ce son&nbsp;: si tu ne l'entends pas, c'est
+    probablement lui — la grille, elle, continue de défiler.
+  </p>
+</div>
