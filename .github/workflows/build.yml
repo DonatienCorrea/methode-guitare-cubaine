@@ -1,0 +1,67 @@
+name: Reconstruire le site et le PDF
+
+# docs/ est un dossier généré mais versionné (GitHub Pages sert main:/docs).
+# Ce workflow garantit qu'il ne peut pas diverger de src/ : toute modification
+# des sources déclenche une reconstruction, et le résultat est recommité.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'requirements.txt'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-docs
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bibliothèques système et polices
+        # Sans ces polices, WeasyPrint retombe sur DejaVu et le PDF change
+        # d'allure à chaque build : elles font partie du rendu, pas du décor.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libfribidi0
+          # Les noms de paquets de polices bougent d'une version d'Ubuntu à
+          # l'autre : une absence dégrade le PDF, elle ne doit pas casser le build.
+          for f in fonts-ebgaramond fonts-inter fonts-jetbrains-mono \
+                   fonts-noto-core fonts-dejavu-core fonts-urw-base35; do
+            sudo apt-get install -y --no-install-recommends "$f" \
+              || echo "::warning::police $f indisponible, rendu dégradé"
+          done
+          fc-cache -f
+          fc-list : family | tr ',' '\n' | sort -u | grep -iE 'garamond|inter|jetbrains' || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Dépendances Python
+        run: pip install -r requirements.txt
+
+      - name: Construire
+        run: python3 src/build.py all
+
+      - name: Recommiter docs/ si le résultat a changé
+        run: |
+          if [ -z "$(git status --porcelain docs)" ]; then
+            echo "docs/ est déjà à jour."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git commit -m "build: régénère docs/ depuis src/ [skip ci]"
+          git push
