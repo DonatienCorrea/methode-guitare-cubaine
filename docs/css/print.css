@@ -150,7 +150,7 @@ body { background: #fff; line-height: 1.55; }
 }
 .toc-list li .n {
   font-family: var(--mono);
-  font-size: .78em;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--rust);
   width: 2.1em;
@@ -158,13 +158,13 @@ body { background: #fff; line-height: 1.55; }
 }
 .toc-list li a {
   font-family: var(--serif);
-  font-size: 1.16em;
+  font-size: var(--fs-lg);
   color: var(--ink);
   text-decoration: none;
   flex: 1 1 auto;
 }
 .toc-list li .d {
-  font-size: .8em;
+  font-size: var(--fs-xs);
   color: var(--ink-mute);
   flex: 0 0 auto;
   max-width: 46%;
@@ -177,7 +177,7 @@ body { background: #fff; line-height: 1.55; }
   text-align: right;
   text-decoration: none;
   font-family: var(--mono);
-  font-size: .82em;
+  font-size: var(--fs-xs);
   font-weight: 700;
   color: var(--teal);
 }
@@ -201,7 +201,7 @@ p, li { orphans: 2; widows: 2; }
 
 /* liens : en PDF, l'URL n'est pas cliquable en dur, on la laisse discrète */
 a { color: var(--teal); text-decoration: none; }
-a.url { font-family: var(--mono); font-size: .8em; color: var(--ink-mute); word-break: break-all; }
+a.url { font-family: var(--mono); font-size: var(--fs-xs); color: var(--ink-mute); word-break: break-all; }
 
 /* images : éviter les débordements */
 figure img { max-height: 210mm; }
@@ -222,7 +222,7 @@ figure img { max-height: 210mm; }
   padding: .55em .8em;
   background: var(--teal-tint);
   border-left: 3px solid var(--teal);
-  font-size: .86em;
+  font-size: var(--fs-sm);
   color: var(--ink-soft);
 }
-.widget-print .u { font-family: var(--mono); font-size: .92em; color: var(--teal); }
+.widget-print .u { font-family: var(--mono); font-size: var(--fs-sm); color: var(--teal); }

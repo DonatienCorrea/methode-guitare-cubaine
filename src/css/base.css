@@ -40,13 +40,39 @@ img, svg, video, iframe { max-width: 100%; height: auto; }
   --serif: "EB Garamond", "Century Schoolbook L", Georgia, serif;
   --sans:  "Inter", "DejaVu Sans", Helvetica, Arial, sans-serif;
   --mono:  "JetBrains Mono", "DejaVu Sans Mono", monospace;
+
+
+  /* Échelle typographique — une seule source de vérité.
+     Toutes les tailles sont en rem : elles se calent sur la racine
+     (17px à l'écran, 10.4pt dans le PDF) et ne se multiplient jamais
+     entre elles, contrairement aux em. N'introduire aucune valeur hors
+     de cette liste. */
+  --fs-3xs:  .62rem;   /* micro-étiquettes en espace contraint */
+  --fs-xxs:  .68rem;   /* sur-titres en capitales, numéros, légendes courtes */
+  --fs-xs:   .78rem;   /* notes, légendes, tablatures, interface secondaire */
+  --fs-sm:   .88rem;   /* tableaux, sommaire latéral, texte d'appui */
+  --fs-md:     1rem;   /* texte courant */
+  --fs-lg:  1.14rem;   /* chapô, h3, titres de carte, citation */
+  --fs-xl:   1.3rem;   /* h2, sous-titre de section */
+  --fs-2xl: 1.55rem;   /* chiffres mis en avant, numéro de semaine */
+  --fs-3xl: 2.55rem;   /* h1 */
+  --fs-hero: 2.9rem;   /* titre de la page d'accueil, redéfini en responsive */
 }
 
 /* ---------------------------------------------------------------- reset */
 * { box-sizing: border-box; }
 
+/* Exposants et indices : seul endroit du projet où une taille relative est
+   juste, puisqu'ils doivent suivre le texte qui les porte. Valeur unique
+   pour que « XVIe » ait partout la même proportion. */
+sup, sub { font-size: .72em; }
+
+/* les champs de formulaire n'héritent pas de la typo du document */
+input, select, textarea { font-family: inherit; font-size: var(--fs-sm); }
+
 body {
   font-family: var(--sans);
+  font-size: var(--fs-md);
   color: var(--ink);
   background: var(--paper);
   line-height: 1.62;
@@ -65,12 +91,12 @@ h1, h2, h3, h4, h5 {
   text-wrap: balance;
 }
 
-h1 { font-size: 2.55em; letter-spacing: -0.012em; }
-h2 { font-size: 1.72em; letter-spacing: -0.008em; margin-top: 1.9em; }
-h3 { font-size: 1.28em; margin-top: 1.7em; color: var(--teal); }
+h1 { font-size: var(--fs-3xl); letter-spacing: -0.012em; }
+h2 { font-size: var(--fs-2xl); letter-spacing: -0.008em; margin-top: 1.9em; }
+h3 { font-size: var(--fs-xl); margin-top: 1.7em; color: var(--teal); }
 h4 {
   font-family: var(--sans);
-  font-size: .82em;
+  font-size: var(--fs-xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .1em;
@@ -93,7 +119,7 @@ h2::after {
 p { margin: 0 0 .95em; }
 p.lead {
   font-family: var(--serif);
-  font-size: 1.24em;
+  font-size: var(--fs-lg);
   line-height: 1.5;
   color: var(--ink-soft);
   margin-bottom: 1.5em;
@@ -120,7 +146,7 @@ hr {
 .sec-head { margin-bottom: 1.8em; }
 .sec-kicker {
   font-family: var(--sans);
-  font-size: .72em;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -131,7 +157,7 @@ hr {
 .sec-head h1 { margin-bottom: .3em; }
 .sec-sub {
   font-family: var(--serif);
-  font-size: 1.3em;
+  font-size: var(--fs-xl);
   font-style: italic;
   color: var(--ink-mute);
   margin: 0;
@@ -157,7 +183,7 @@ hr {
 .box > :last-child { margin-bottom: 0; }
 .box-title {
   font-family: var(--sans);
-  font-size: .74em;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -168,7 +194,7 @@ hr {
 }
 .box-title .ic {
   font-family: var(--serif);
-  font-size: 1.25em;
+  font-size: var(--fs-lg);
   font-weight: 700;
   letter-spacing: 0;
   text-transform: none;
@@ -196,14 +222,14 @@ hr {
 .box.def p { margin-bottom: .55em; }
 .box.def .term-word {
   font-family: var(--serif);
-  font-size: 1.2em;
+  font-size: var(--fs-lg);
   font-weight: 700;
   color: var(--rust-dark);
 }
 .box.def .term-etym {
   font-style: italic;
   color: var(--ink-mute);
-  font-size: .9em;
+  font-size: var(--fs-sm);
 }
 
 /* terme technique signalé dans le fil du texte */
@@ -236,7 +262,7 @@ hr {
 }
 .listen .qr span {
   display: block;
-  font-size: .58em;
+  font-size: var(--fs-3xs);
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--ink-mute);
@@ -265,14 +291,14 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.3em 0;
-  font-size: .92em;
+  font-size: var(--fs-sm);
   break-inside: avoid;
 }
 thead th {
   background: var(--teal);
   color: #fff;
   font-family: var(--sans);
-  font-size: .78em;
+  font-size: var(--fs-xs);
   font-weight: 650;
   letter-spacing: .06em;
   text-transform: uppercase;
@@ -288,7 +314,7 @@ tbody td {
   vertical-align: top;
 }
 tbody tr:nth-child(even) { background: #FAF6EF; }
-table.compact { font-size: .86em; }
+table.compact { font-size: var(--fs-xs); }
 table.compact tbody td, table.compact thead th { padding: .34em .55em; }
 td.num, th.num { font-variant-numeric: tabular-nums; text-align: center; }
 td.chord { font-family: var(--mono); font-weight: 700; color: var(--rust-dark); }
@@ -319,7 +345,7 @@ td.cell-check::after {
 /* ------------------------------------------------------------- tablature */
 pre.tab, pre.grid {
   font-family: var(--mono);
-  font-size: .78em;
+  font-size: var(--fs-xs);
   line-height: 1.5;
   background: #fff;
   border: 1px solid var(--line);
@@ -333,7 +359,7 @@ pre.tab, pre.grid {
 }
 pre.grid { background: var(--sand); }
 .tab-cap, .fig-cap {
-  font-size: .8em;
+  font-size: var(--fs-xs);
   color: var(--ink-mute);
   margin: -.75em 0 1.4em;
   font-style: italic;
@@ -348,7 +374,7 @@ figure {
 }
 figure img, figure svg { max-width: 100%; height: auto; }
 figcaption {
-  font-size: .8em;
+  font-size: var(--fs-xs);
   color: var(--ink-mute);
   margin-top: .6em;
   font-style: italic;
@@ -382,18 +408,18 @@ figcaption b { font-style: normal; color: var(--ink-soft); }
   page-break-inside: avoid;
 }
 .chordcard img { width: 132px; }
-.chordcard h3 { margin: 0 0 .15em; color: var(--ink); font-size: 1.35em; }
+.chordcard h3 { margin: 0 0 .15em; color: var(--ink); font-size: var(--fs-xl); }
 .chordcard .cc-sub {
-  font-size: .78em;
+  font-size: var(--fs-xs);
   text-transform: uppercase;
   letter-spacing: .09em;
   color: var(--ink-mute);
   font-weight: 600;
   margin-bottom: .6em;
 }
-.chordcard dl { margin: 0; font-size: .92em; }
+.chordcard dl { margin: 0; font-size: var(--fs-sm); }
 .chordcard dt {
-  font-size: .72em;
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: .09em;
   text-transform: uppercase;
@@ -426,7 +452,7 @@ ol.steps > li::before {
   color: #fff;
   border-radius: 50%;
   font-family: var(--sans);
-  font-size: .8em;
+  font-size: var(--fs-xs);
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -454,18 +480,18 @@ ol.steps > li b { color: var(--ink); }
 }
 .week-num {
   font-family: var(--serif);
-  font-size: 1.55em;
+  font-size: var(--fs-2xl);
   font-weight: 700;
   line-height: 1;
 }
 .week-title {
   font-family: var(--serif);
-  font-size: 1.22em;
+  font-size: var(--fs-lg);
   font-weight: 600;
   flex: 1;
 }
 .week-goal {
-  font-size: .72em;
+  font-size: var(--fs-xxs);
   text-transform: uppercase;
   letter-spacing: .1em;
   opacity: .82;
@@ -477,11 +503,11 @@ ol.steps > li b { color: var(--ink); }
 .week-body h4:first-child { margin-top: 0; }
 
 /* séance minutée */
-table.seance { font-size: .87em; margin: .9em 0; }
+table.seance { font-size: var(--fs-sm); margin: .9em 0; }
 table.seance td:first-child {
   width: 4.6em;
   font-family: var(--mono);
-  font-size: .92em;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--teal);
   white-space: nowrap;
@@ -502,7 +528,7 @@ table.seance thead th { background: var(--ink-soft); }
 .pill {
   display: inline-block;
   font-family: var(--mono);
-  font-size: .8em;
+  font-size: var(--fs-xs);
   font-weight: 700;
   background: var(--sand-deep);
   color: var(--rust-dark);
@@ -514,7 +540,7 @@ table.seance thead th { background: var(--ink-soft); }
 
 .kbd {
   font-family: var(--mono);
-  font-size: .85em;
+  font-size: var(--fs-xs);
   background: var(--sand);
   border: 1px solid var(--line);
   border-radius: 3px;
@@ -525,7 +551,7 @@ table.seance thead th { background: var(--ink-soft); }
 .prog {
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 1.05em;
+  font-size: var(--fs-lg);
   color: var(--rust-dark);
   letter-spacing: .02em;
 }
@@ -536,7 +562,7 @@ blockquote {
   padding: .2em 0 .2em 1.15em;
   border-left: 3px solid var(--gold);
   font-family: var(--serif);
-  font-size: 1.16em;
+  font-size: var(--fs-lg);
   font-style: italic;
   color: var(--ink-soft);
   break-inside: avoid;
@@ -544,7 +570,7 @@ blockquote {
 blockquote footer {
   font-family: var(--sans);
   font-style: normal;
-  font-size: .72em;
+  font-size: var(--fs-xxs);
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--ink-mute);
@@ -556,7 +582,7 @@ blockquote footer {
 dl.gloss { margin: 1.2em 0; }
 dl.gloss dt {
   font-family: var(--serif);
-  font-size: 1.1em;
+  font-size: var(--fs-lg);
   font-weight: 700;
   color: var(--rust-dark);
   margin-top: .9em;
@@ -564,7 +590,7 @@ dl.gloss dt {
 }
 dl.gloss dt .cat {
   font-family: var(--sans);
-  font-size: .56em;
+  font-size: var(--fs-3xs);
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -596,6 +622,6 @@ ul.check li::before {
 
 /* petits repères de navigation interne */
 .anchor-note {
-  font-size: .86em;
+  font-size: var(--fs-xs);
   color: var(--ink-mute);
 }
