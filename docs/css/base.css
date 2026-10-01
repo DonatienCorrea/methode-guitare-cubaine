@@ -5,6 +5,8 @@
 
 /* --------------------------------------------------- garde-fou mobile */
 html, body { max-width: 100%; overflow-x: hidden; }
+/* un titre long ne doit jamais élargir la page sur un petit écran */
+h1, h2, h3, h4, .sec-head h1, .brand .bt, .home-card h3 { overflow-wrap: break-word; }
 img, svg, video, iframe { max-width: 100%; height: auto; }
 
 :root {

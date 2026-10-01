@@ -12,6 +12,12 @@ body { margin: 0; }
   grid-template-columns: 290px minmax(0, 1fr);
   min-height: 100vh;
 }
+/* Par défaut un élément de grille refuse de descendre sous la largeur
+   intrinsèque de son contenu (min-width: auto). Une tablature large suffit
+   alors à élargir toute la page : le téléphone dézoome pour tout afficher.
+   On autorise explicitement le rétrécissement, le défilement reste confié
+   aux conteneurs prévus pour ça (pre.tab, pre.grid, .table-scroll). */
+.side, .main, .wrap, .progress { min-width: 0; }
 
 /* ------------------------------------------------------ barre latérale */
 .side {
@@ -316,6 +322,7 @@ a.qr:focus-visible { outline: none; }
 
 /* --- la grille : 2 mesures x 8 croches */
 .metro-grid {
+  min-width: 0;
   list-style: none; margin: .9rem 0 .4rem; padding: 0;
   display: grid; grid-template-columns: repeat(16, 1fr); gap: 3px;
 }
@@ -354,7 +361,7 @@ a.qr:focus-visible { outline: none; }
 }
 .m-play:hover { background: var(--teal-soft); }
 .metro.playing .m-play { background: var(--rust); }
-.m-tempo { display: flex; align-items: center; gap: .55rem; flex: 1 1 15rem; }
+.m-tempo { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; flex: 1 1 15rem; min-width: 0; }
 .m-tempo label {
   font-family: var(--sans); font-size: .72rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: .06em; color: var(--ink-mute);
@@ -395,13 +402,13 @@ a.qr:focus-visible { outline: none; }
   display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1.2rem;
   margin-top: .9rem; padding-top: .8rem; border-top: 1px solid var(--line-soft);
 }
-.m-opt { display: flex; align-items: center; gap: .5rem; }
+.m-opt { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 .m-opt.off { opacity: .4; }
 .m-opt-lab {
   font-family: var(--sans); font-size: .72rem; font-weight: 600;
   text-transform: uppercase; letter-spacing: .06em; color: var(--ink-mute);
 }
-.m-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.m-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
 .m-seg button {
   background: #fff; border: 0; border-right: 1px solid var(--line);
   padding: .35rem .6rem; cursor: pointer;
@@ -445,6 +452,7 @@ a.qr:focus-visible { outline: none; }
   align-items: center; gap: .7rem;
   font-family: var(--serif); font-size: 1.05rem;
   border: 0; width: 100%; text-align: left; cursor: pointer;
+  min-width: 0;
 }
 .burger span { font-family: var(--sans); font-size: 1.3rem; line-height: 1; }
 
@@ -452,7 +460,7 @@ a.qr:focus-visible { outline: none; }
 
 /* ------------------------------------------------------------ responsive */
 @media (max-width: 960px) {
-  .layout { grid-template-columns: 1fr; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
   .burger { display: flex; }
   .side {
     position: static; height: auto; max-height: 0;
