@@ -80,6 +80,18 @@ def widgets(frag, web):
     return WIDGET.sub(repl, frag)
 
 
+FIG_IMG = re.compile(r'(<figure[^>]*>\s*)(<img [^>]*>)')
+
+def scrollable_figures(frag):
+    """Web uniquement : rend les figures défilables horizontalement.
+
+    Une figure est une image : son texte est hors de portée du CSS. Réduite
+    à la largeur d'un téléphone, une figure dessinée dans 660 unités voit ses
+    étiquettes tomber sous 5 px. On préfère la montrer à sa taille réelle et
+    la faire balayer du doigt, exactement comme une tablature trop large."""
+    return FIG_IMG.sub(r'\1<div class="fig-scroll">\2</div>', frag)
+
+
 def fragment(sec):
     path = os.path.join(SECT, f"{sec['n']:02d}-{sec['slug']}.html")
     if not os.path.exists(path):
@@ -333,7 +345,9 @@ def build_site():
     for i, s in enumerate(SECTIONS):
         crumb = (f'<div class="crumb">{s["kicker"]} &nbsp;&middot;&nbsp; '
                  f'Section <b>{s["n"]:02d}</b> / {len(SECTIONS)}</div>')
-        inner = head_block(s) + widgets(listening(fragment(s), web=True), web=True) + pager(i)
+        inner = (head_block(s)
+                 + scrollable_figures(widgets(listening(fragment(s), web=True), web=True))
+                 + pager(i))
         with open(os.path.join(SITE, f"{s['slug']}.html"), "w", encoding="utf-8") as f:
             f.write(page(s["slug"], s["title"], inner, crumb,
                          desc=s["sub"], path=f'{s["slug"]}.html',

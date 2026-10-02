@@ -47,10 +47,10 @@ img, svg, video, iframe { max-width: 100%; height: auto; }
      (17px à l'écran, 10.4pt dans le PDF) et ne se multiplient jamais
      entre elles, contrairement aux em. N'introduire aucune valeur hors
      de cette liste. */
-  --fs-3xs:  .62rem;   /* micro-étiquettes en espace contraint */
-  --fs-xxs:  .68rem;   /* sur-titres en capitales, numéros, légendes courtes */
-  --fs-xs:   .78rem;   /* notes, légendes, tablatures, interface secondaire */
-  --fs-sm:   .88rem;   /* tableaux, sommaire latéral, texte d'appui */
+  --fs-xxs:  .72rem;   /* 12,2 px — plancher absolu : sur-titres en capitales,
+                          numéros, micro-étiquettes. Rien ne descend plus bas. */
+  --fs-xs:   .82rem;   /* notes, légendes, tablatures, interface secondaire */
+  --fs-sm:    .9rem;   /* tableaux, sommaire latéral, texte d'appui */
   --fs-md:     1rem;   /* texte courant */
   --fs-lg:  1.14rem;   /* chapô, h3, titres de carte, citation */
   --fs-xl:   1.3rem;   /* h2, sous-titre de section */
@@ -190,6 +190,7 @@ hr {
   margin: 0 0 .5em;
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;   /* un titre d'encadré long doit passer à la ligne */
   gap: .5em;
 }
 .box-title .ic {
@@ -262,7 +263,7 @@ hr {
 }
 .listen .qr span {
   display: block;
-  font-size: var(--fs-3xs);
+  font-size: var(--fs-xxs);
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--ink-mute);
@@ -590,7 +591,7 @@ dl.gloss dt {
 }
 dl.gloss dt .cat {
   font-family: var(--sans);
-  font-size: var(--fs-3xs);
+  font-size: var(--fs-xxs);
   font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;

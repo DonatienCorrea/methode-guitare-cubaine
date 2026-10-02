@@ -218,7 +218,7 @@ def build_posture():
         p.append(f'<text x="{lx+24}" y="{yy}" font-size="10.5" fill="{INK}">{lab}</text>')
 
     p.append(f'<text x="{lx}" y="{ly+128}" font-size="11" font-weight="700" fill="{RUSTD}">À VÉRIFIER</text>')
-    checks = ["Manche incliné à ~ 45°, tête à hauteur d'épaule",
+    checks = ["Manche à ~ 45°, tête à hauteur d'épaule",
               "Dos droit mais pas raide, épaules basses",
               "Pied gauche sur le repose-pied (10–18 cm)",
               "Les deux mains sont libres : si tu lâches",
@@ -243,7 +243,7 @@ def build_right_hand():
     p.append(f'<text x="14" y="38" font-size="10" fill="{MUTE}">chaque doigt a sa corde attitrée — c\'est la base de tout arpège</text>')
 
     # cordes
-    x0, x1 = 300, 596
+    x0, x1 = 300, 548
     ys = [70, 95, 120, 145, 170, 195]
     names = [("6", "Mi", "p"), ("5", "La", "p"), ("4", "Ré", "p"),
              ("3", "Sol", "i"), ("2", "Si", "m"), ("1", "Mi", "a")]
@@ -273,7 +273,7 @@ def build_right_hand():
     # tableau de légende
     ly = 250
     p.append(f'<line x1="14" y1="{ly-14}" x2="{W-14}" y2="{ly-14}" stroke="{LINE}"/>')
-    cols = [("p", "pulgar", "pouce", "cordes 6·5·4 (les basses)", "#B94F2C"),
+    cols = [("p", "pulgar", "pouce", "cordes 6·5·4 (basses)", "#B94F2C"),
             ("i", "índice", "index", "corde 3 (sol)", "#C68B21"),
             ("m", "medio", "majeur", "corde 2 (si)", "#1C5057"),
             ("a", "anular", "annulaire", "corde 1 (mi aigu)", "#3A6F52")]
@@ -288,10 +288,10 @@ def build_right_hand():
 
     p.append(f'<text x="14" y="{ly+66}" font-size="10" fill="{MUTE}">'
              f'Le petit doigt (<tspan font-style="italic">meñique</tspan>, noté <tspan font-weight="700">e</tspan> ou '
-             f'<tspan font-weight="700">c</tspan>) ne sert quasiment jamais&#160;: il reste détendu, sans toucher la table.</text>')
+             f'<tspan font-weight="700">c</tspan>) ne sert quasiment jamais&#160;: il reste détendu.</text>')
     p.append(f'<text x="14" y="{ly+82}" font-size="10" fill="{MUTE}">'
              f'Le pouce passe <tspan font-weight="700" fill="{RUSTD}">devant</tspan> les autres doigts&#160;: '
-             f'vu de dessus, p et i forment une croix, jamais un «&#160;pincement&#160;».</text>')
+             f'vu de dessus, p et i forment une croix.</text>')
     p.append("</svg>")
     write("main-droite-pima.svg", "".join(p))
 
@@ -323,11 +323,11 @@ def build_strokes():
     p.append(panel(14, "TIRANDO — le jeu « libre »", "le doigt passe au-dessus des autres cordes", TEAL,
                    "M 120 140 C 140 120, 150 100, 152 78",
                    "M 152 90 C 160 78, 168 62, 166 46",
-                   "→ arpèges, accords. Le doigt part vers la paume."))
+                   "→ arpèges, accords. Doigt vers la paume."))
     p.append(panel(296, "APOYANDO — le jeu « butté »", "le doigt s'appuie sur la corde voisine", RUST,
                    "M 402 140 C 422 122, 432 104, 434 82",
                    "M 434 78 L 434 100",
-                   "→ mélodies, basses puissantes. Son plus rond."))
+                   "→ mélodies, basses. Son plus rond."))
     p.append("</svg>")
     write("apoyando-tirando.svg", "".join(p))
 
@@ -419,8 +419,8 @@ def build_tuner_direction():
 
     p.append(f'<rect x="14" y="152" width="{W-28}" height="28" rx="6" fill="{SAND}" stroke="{LINE}"/>')
     p.append(f'<text x="26" y="170" font-size="9.8" fill="{SOFT}">'
-             f'<tspan font-weight="700" fill="{RUSTD}">Règle d\'or&#160;:</tspan> toujours arriver à la note '
-             f'<tspan font-style="italic">par en dessous</tspan>. Si tu es trop haut, redescends sous la note puis remonte.</text>')
+             f'<tspan font-weight="700" fill="{RUSTD}">Règle d\'or&#160;:</tspan> arriver à la note '
+             f'<tspan font-style="italic">par en dessous</tspan>. Trop haut&#160;? Redescends dessous, puis remonte.</text>')
     p.append("</svg>")
     write("mecaniques-sens.svg", "".join(p))
 
@@ -475,8 +475,8 @@ def build_pivot():
 
     p.append(f'<rect x="14" y="196" width="{W-28}" height="42" rx="7" fill="{"#EAF3ED"}" stroke="#C6DCCF"/>')
     p.append(f'<text x="28" y="214" font-size="10.3" fill="{SOFT}">'
-             f'<tspan font-weight="700" fill="{GREEN}">Les doigts 2 et 3</tspan> gardent exactement le même écart&#160;: '
-             f'ils descendent d\'une corde, sans changer de case.</text>')
+             f'<tspan font-weight="700" fill="{GREEN}">Les doigts 2 et 3</tspan> gardent le même écart&#160;: '
+             f'ils descendent d\'une corde, même case.</text>')
     p.append(f'<text x="28" y="230" font-size="10.3" fill="{SOFT}">'
              f'Seul <tspan font-weight="700" fill="{RUST}">l\'index</tspan> vient s\'ajouter en case 1. '
              f'Un seul doigt à penser au lieu de trois&#160;!</text>')

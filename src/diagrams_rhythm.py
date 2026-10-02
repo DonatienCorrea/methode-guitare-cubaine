@@ -101,8 +101,8 @@ def build_note_values():
 
     p.append(f'<rect x="14" y="{yb+34}" width="{W-28}" height="30" rx="6" fill="{SAND}" stroke="{LINE}"/>')
     p.append(f'<text x="26" y="{yb+53}" font-size="10" fill="{SOFT}">'
-             f'<tspan font-weight="700" fill="{RUSTD}">Le point</tspan> placé après une note ajoute la moitié de sa durée&#160;: '
-             f'une blanche pointée = 3 temps, une noire pointée = 1 temps et demi.</text>')
+             f'<tspan font-weight="700" fill="{RUSTD}">Le point</tspan> ajoute la moitié de la durée&#160;: '
+             f'blanche pointée = 3 temps, noire pointée = 1 temps et demi.</text>')
     p.append("</svg>")
     write("valeurs-rythmiques.svg", "".join(p))
 
@@ -111,7 +111,7 @@ def build_note_values():
 #  SILENCES
 # =====================================================================
 def build_rests():
-    W, H = 640, 150
+    W, H = 640, 166
     p = [svg_open(W, H)]
     p.append(f'<rect width="{W}" height="{H}" fill="{PAPER}"/>')
     p.append(f'<text x="14" y="22" font-size="12" font-weight="700" fill="{RUSTD}">LES SILENCES</text>')
@@ -124,11 +124,12 @@ def build_rests():
              ("quart-soupir", "Quart de soupir", "¼ temps", "double-croche")]
     for k, (kind, name, dur, eq) in enumerate(items):
         cx = 76 + k * 124
-        p.append(f'<rect x="{cx-52}" y="58" width="104" height="76" rx="8" fill="#fff" stroke="{LINE}"/>')
+        p.append(f'<rect x="{cx-52}" y="58" width="104" height="92" rx="8" fill="#fff" stroke="{LINE}"/>')
         p.append(f'<line x1="{cx-34}" y1="84" x2="{cx+34}" y2="84" stroke="{LINE}" stroke-width="1"/>')
         p.append(rest_glyph(cx, 84, kind, INK))
-        p.append(f'<text x="{cx}" y="{116}" text-anchor="middle" font-size="10.3" font-weight="700" fill="{INK}">{name}</text>')
-        p.append(f'<text x="{cx}" y="{128}" text-anchor="middle" font-size="9" fill="{MUTE}">{dur} · {eq}</text>')
+        p.append(f'<text x="{cx}" y="{118}" text-anchor="middle" font-size="10.3" font-weight="700" fill="{INK}">{name}</text>')
+        p.append(f'<text x="{cx}" y="{132}" text-anchor="middle" font-size="9" fill="{MUTE}">{dur}</text>')
+        p.append(f'<text x="{cx}" y="{145}" text-anchor="middle" font-size="9" fill="{MUTE}">{eq}</text>')
     p.append("</svg>")
     write("silences.svg", "".join(p))
 

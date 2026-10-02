@@ -41,7 +41,7 @@ body { margin: 0; }
   margin-bottom: 1.1rem;
 }
 .brand .bk {
-  font-size: var(--fs-3xs);
+  font-size: var(--fs-xxs);
   letter-spacing: .26em;
   text-transform: uppercase;
   color: #E0B169;
@@ -337,7 +337,7 @@ a.qr:focus-visible { outline: none; }
   border-radius: 3px;
   background: #fff;
   display: flex; align-items: flex-end; justify-content: center;
-  font-family: var(--mono); font-size: var(--fs-3xs); color: var(--ink-mute);
+  font-family: var(--mono); font-size: var(--fs-xxs); color: var(--ink-mute);
   padding-bottom: 2px;
 }
 .metro-grid .c.beat { background: #FFFDF8; border-color: var(--line); }
@@ -500,4 +500,24 @@ a.qr:focus-visible { outline: none; }
   .side, .pager, .crumb, .burger, .totop, .progress, .web-only { display: none !important; }
   .layout { display: block; }
   .wrap { max-width: none; padding: 0; }
+}
+
+/* Figures défilables ------------------------------------------------------
+   Une figure SVG est une image : le CSS ne peut pas atteindre son texte, elle
+   se réduit en bloc. Sous 760 px, plutôt que de la comprimer jusqu'à rendre
+   ses étiquettes illisibles (jusqu'à 3,9 px mesurés sur un écran de 390 px),
+   on la laisse à sa taille naturelle et on la fait défiler, comme pre.tab.
+   text-align: left est indispensable : centré, le débordement gauche d'un
+   conteneur défilant devient inatteignable. */
+.fig-scroll { min-width: 0; }
+
+@media (max-width: 760px) {
+  .fig-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    text-align: left;
+    /* repère visuel : la figure continue à droite */
+    -webkit-mask-image: none;
+  }
+  .fig-scroll > img { max-width: none; width: auto; }
 }

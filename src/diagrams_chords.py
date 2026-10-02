@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """Génération des diagrammes d'accords et des schémas de manche (SVG)."""
 import os
+import re
 
 OUT = os.path.join(os.path.dirname(__file__), "assets", "img")
 os.makedirs(OUT, exist_ok=True)
@@ -24,7 +25,33 @@ MONO  = "'JetBrains Mono', monospace"
 MUSIC = "'Noto Music', serif"
 
 
+# Plancher typographique des figures larges.
+#
+# Le texte d'un SVG n'est pas atteignable par le CSS : c'est une image
+# remplacee, elle se reduit en bloc avec max-width: 100%. Une figure
+# dessinee dans un viewBox de 660 unites, affichee dans 358 px de large sur
+# un telephone, voit donc TOUT son texte divise par 1,84 : une etiquette de
+# 9 unites tombe a 4,9 px, soit moins de la moitie du plus petit seuil
+# admissible. On impose donc une taille minimale exprimee en unites de
+# viewBox, ce qui revient a un plancher en pixels des lors que la figure est
+# rendue a sa taille naturelle (le CSS s'en charge : defilement horizontal
+# sous 760 px). Seules les figures larges sont concernees ; les diagrammes
+# d'accords (viewBox de 150) sont deja rendus pres de leur taille naturelle.
+FS_FLOOR = 12.0
+FS_FLOOR_MIN_VB = 400
+
+
+def _lift_font_sizes(svg):
+    """Releve les tailles de texte sous FS_FLOOR dans les figures larges."""
+    m = re.search(r'viewBox="[\d.]+ [\d.]+ ([\d.]+)', svg)
+    if not m or float(m.group(1)) < FS_FLOOR_MIN_VB:
+        return svg
+    bump = lambda mo: 'font-size="%g"' % max(float(mo.group(1)), FS_FLOOR)
+    return re.sub(r'font-size="([\d.]+)"', bump, svg)
+
+
 def write(name, svg):
+    svg = _lift_font_sizes(svg)
     path = os.path.join(OUT, name)
     with open(path, "w", encoding="utf-8") as f:
         f.write(svg)
@@ -455,8 +482,8 @@ def build_staff_vs_tab():
                  f'font-weight="700" fill="{RUSTD}">{fret}</text>')
         x += 50
     p.append(f'<text x="14" y="{top2+6*gap2+18}" font-size="10.5" fill="{SOFT}">'
-             f'Les 6 lignes = les 6 cordes (la corde 1, la plus aiguë, est en haut). '
-             f'Le chiffre = la case à presser. <tspan font-weight="700" fill="{RUSTD}">0</tspan> = corde à vide.</text>')
+             f'Les 6 lignes = les 6 cordes (la 1, la plus aiguë, en haut). '
+             f'Le chiffre = la case. <tspan font-weight="700" fill="{RUSTD}">0</tspan> = corde à vide.</text>')
     p.append("</svg>")
     write("portee-vs-tablature.svg", "".join(p))
 
