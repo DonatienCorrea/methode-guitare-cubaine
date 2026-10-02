@@ -127,7 +127,7 @@ def chord_svg(name, frets, fingers, nfrets=4, base=1, barre=None,
         p.append(f'<rect x="{x(i0)-8.5:.1f}" y="{yy-8.5:.1f}" width="{x(i1)-x(i0)+17:.1f}" '
                  f'height="17" rx="8.5" fill="{RUST}"/>')
         p.append(f'<text x="{(x(i0)+x(i1))/2:.1f}" y="{yy+4.4:.1f}" text-anchor="middle" '
-                 f'font-size="10.5" font-weight="700" fill="#fff">{bf}</text>')
+                 f'font-size="11" font-weight="700" fill="#fff">{bf}</text>')
 
     # points
     for i, fr in enumerate(frets):
@@ -140,14 +140,14 @@ def chord_svg(name, frets, fingers, nfrets=4, base=1, barre=None,
             fg = fingers[i] if fingers else 0
             if fg:
                 p.append(f'<text x="{x(i):.1f}" y="{cy+3.9:.1f}" text-anchor="middle" '
-                         f'font-size="10.5" font-weight="700" fill="#fff">{fg}</text>')
+                         f'font-size="11" font-weight="700" fill="#fff">{fg}</text>')
 
     # noms de notes sous le diagramme
     if notes:
         for i, n in enumerate(notes):
             col = MUTE if frets[i] == -1 else RUSTD
             p.append(f'<text x="{x(i):.1f}" y="{y(nfrets)+14:.1f}" text-anchor="middle" '
-                     f'font-family="{MONO}" font-size="9" font-weight="700" fill="{col}">{n}</text>')
+                     f'font-family="{MONO}" font-size="11" font-weight="700" fill="{col}">{n}</text>')
 
     p.append("</svg>")
     return "".join(p)
